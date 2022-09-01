@@ -39,12 +39,6 @@ exports.createThing = (req, res, next) => {
  };
 
 exports.deleteThing = (req, res, next) => {
-    Thing.deleteOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
-        .catch(error => res.status(400).json({ error }));
-};
-
-exports.deleteThing = (req, res, next) => {
     Thing.findOne({ _id: req.params.id})
         .then(thing => {
             if (thing.userId != req.auth.userId) {
@@ -62,6 +56,13 @@ exports.deleteThing = (req, res, next) => {
             res.status(500).json({ error });
         });
  };
+
+
+exports.getOneThing = (req, res, next) => {
+    Thing.findOne({ _id: req.params.id })
+        .then(thing => res.status(200).json(thing))
+        .catch(error => res.status(404).json({ error }));
+};
 
 exports.getAllThings = (req, res, next) => {
     Thing.find()

@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
 const path = require('path');
-const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauces');
+const userRoutes = require('./routes/user');
 
 mongoose.connect('mongodb+srv://sirin:user123@cluster0.dlzt1wy.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
