@@ -1,3 +1,7 @@
+/**
+ * Import de jsonwebtoken pour la vérification de la validité du token
+ * Import du dossier .env pour sécurisé le token
+ */
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 

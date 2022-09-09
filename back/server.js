@@ -1,3 +1,4 @@
+// Processus de création d'un serveur basique
 const http = require('http');
 const app = require('./app');
 

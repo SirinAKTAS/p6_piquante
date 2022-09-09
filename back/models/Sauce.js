@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Schema des sauces qui sera envoyé dans la BDD
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },  
   name: { type: String, required: true },

@@ -1,6 +1,17 @@
+/**
+ * Import du model des sauces
+ * Import de fs : module de système de fichiers Node.js permet de travailler avec le système de fichiers
+ */
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
+/**
+ * Const sauceObject récupère les éléments du body puis on le transforme en JSON grâce à .parse
+ * Suppression de l'_id et l'userId de la sauce
+ * Ajout de l'image dans le dossier images lors de la création de la sauce
+ * Ajout par défaut likes et dislikes à 0 lors de la création de la sauce
+ * Envoi dans la BDD après création de la sauce
+ */
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
@@ -18,6 +29,10 @@ exports.createSauce = (req, res, next) => {
     .catch(error => { res.status(400).json( { error })})
  };
 
+/**
+ * Vérification de l'utilisateur pour permettre ou non la modification de la sauce
+ * Si Non = msg d'erreur, si Oui = maj dans la BDD
+ */
  exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ? {
         ...JSON.parse(req.body.sauce),
@@ -40,6 +55,10 @@ exports.createSauce = (req, res, next) => {
         });
  };
 
+/**
+ * Vérification de l'utilisateur pour permettre ou non la suppression de la sauce
+ * Si autorisé = Suppression de l'image grâce à .unlink du dossier image + suppression de la sauce dans la BDD
+ */
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id})
         .then(sauce => {
@@ -59,19 +78,27 @@ exports.deleteSauce = (req, res, next) => {
         });
  };
 
-
+// Afficher une sauce
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
 };
 
+// Afficher toutes les sauces
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error }));
 };
 
+/**
+ * Utilisation de la méthode .includes pour trouver un élement dans un tableau 
+ * Utilisation de $inc pour incrémenter une valeur à un élément ( ici aux likes/dislikes )
+ * Utilisation de $push pour ajouter un élément au tableau
+ * Utilisation de $pull pour retirer un élément du tableau
+ * Utilisation de switch avec les différents cas possible : -1, 0, 1. 
+ */
 exports.likeSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id})
     .then((sauce) => {

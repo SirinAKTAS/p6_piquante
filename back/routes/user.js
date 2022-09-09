@@ -1,3 +1,4 @@
+// Création d'un nouvel objet router pour faire des chemins différents
 const express = require('express');
 const router = express.Router();
 
